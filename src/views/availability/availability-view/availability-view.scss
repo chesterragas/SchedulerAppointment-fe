@@ -1,0 +1,156 @@
+.availability-page {
+  box-sizing: border-box;
+  padding: 24px 32px 40px;
+
+  @media (max-width: 720px) {
+    padding: 16px;
+  }
+}
+
+.availability-page__intro {
+  margin-bottom: 24px;
+
+  h1 {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 4vw, 48px);
+    font-weight: 520;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  p {
+    max-width: 52ch;
+    margin-top: 8px;
+    color: var(--ink-soft);
+  }
+}
+
+.availability-page__error {
+  margin: 0 0 16px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--danger-soft);
+  color: var(--danger);
+}
+
+.availability-page__sheet {
+  min-height: 720px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 16px 40px var(--shadow);
+
+  @media (max-width: 720px) {
+    min-height: 640px;
+  }
+}
+
+.availability-page__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+
+  @media (max-width: 720px) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+}
+
+.availability-page__count,
+.availability-page__status {
+  margin: 0;
+  color: var(--ink-soft);
+}
+
+.availability-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  color: var(--ink-soft);
+  font-size: 14px;
+}
+
+.availability-legend li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.availability-legend__swatch {
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--card);
+}
+
+.availability-legend__swatch--closed {
+  border-color: var(--danger-line);
+  background: var(--danger-soft);
+}
+
+.availability-page .fc {
+  --fc-border-color: #8fadc4;
+  --fc-page-bg-color: transparent;
+  --fc-neutral-bg-color: var(--wash);
+  --fc-today-bg-color: var(--accent-soft);
+  --fc-button-bg-color: transparent;
+  --fc-button-border-color: var(--line);
+  --fc-button-text-color: var(--ink);
+  --fc-button-hover-bg-color: var(--wash);
+  --fc-button-hover-border-color: var(--line);
+  --fc-button-active-bg-color: var(--ink);
+  --fc-button-active-border-color: var(--ink);
+  --fc-button-active-text-color: var(--paper);
+  font-family: var(--font-body);
+}
+
+.availability-page .fc .fc-toolbar-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 520;
+  letter-spacing: -0.03em;
+}
+
+.availability-page .fc .fc-col-header-cell-cushion,
+.availability-page .fc .fc-timegrid-slot-label-cushion,
+.availability-page .fc .fc-timegrid-axis-cushion {
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+
+.availability-page .fc .fc-timegrid-slot-lane {
+  cursor: pointer;
+}
+
+.availability-page .fc .availability-event {
+  border: 0;
+  border-radius: 6px;
+  background: var(--danger);
+  color: var(--on-accent);
+  cursor: pointer;
+}
+
+.availability-page .fc .fc-bg-event.fc-unavailable {
+  opacity: 1;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    -45deg,
+    rgba(154, 64, 52, 0.08),
+    rgba(154, 64, 52, 0.08) 8px,
+    rgba(154, 64, 52, 0.18) 8px,
+    rgba(154, 64, 52, 0.18) 16px
+  );
+}
+
+@media (max-width: 720px) {
+  .availability-page .fc .fc-toolbar-title {
+    font-size: 24px;
+  }
+}
