@@ -2,8 +2,8 @@
   <main class="login">
     <section class="login__intro">
       <p class="login__mark">Schedule</p>
-      <h1>A calendar that stays yours.</h1>
-      <p class="login__lead">Sign in to see, add, and change the events on your own month.</p>
+      <h1>Your calendar, ready for appointments.</h1>
+      <p class="login__lead">Sign in to open a doctor's calendar, book a time, or manage the appointments on it.</p>
     </section>
     <section class="login__panel">
       <form class="login__form" @submit.prevent="submit">

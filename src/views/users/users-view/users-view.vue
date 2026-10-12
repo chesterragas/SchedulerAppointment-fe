@@ -131,6 +131,13 @@
           <input v-model="editor.isDoctor" type="checkbox" />
           Doctor
         </label>
+        <app-input
+          v-if="editor.isDoctor"
+          id="user-doctor-title"
+          v-model="editor.doctorTitle"
+          label="Title"
+          autocomplete="honorific-prefix"
+        />
         <p class="user-form__hint">A doctor has a calendar. Generate a link so someone else can open it.</p>
         <label class="user-form__check">
           <input v-model="editor.isAdmin" type="checkbox" />

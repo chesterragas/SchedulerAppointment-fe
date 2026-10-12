@@ -17,9 +17,9 @@ function compactCalendar() {
   return window.matchMedia('(max-width: 720px)').matches
 }
 
-function calendarToolbar(compact) {
+function calendarToolbar() {
   return {
-    left: compact ? 'prev,next' : 'prev,next today',
+    left: 'prev,next',
     center: 'title',
     right: ''
   }
@@ -118,7 +118,7 @@ export default {
       calendarOptions: {
         plugins: [dayGridPlugin, timeGridPlugin, interactionPlugin],
         initialView: compact ? 'timeGridDay' : 'timeGridWeek',
-        headerToolbar: calendarToolbar(compact),
+        headerToolbar: calendarToolbar(),
         windowResize: () => this.syncCalendarView(),
         height: compact ? 640 : '100%',
         allDaySlot: false,
@@ -350,7 +350,7 @@ export default {
       if (calendar.view.type === target) {
         return
       }
-      calendar.setOption('headerToolbar', calendarToolbar(compact))
+      calendar.setOption('headerToolbar', calendarToolbar())
       calendar.setOption('height', compact ? 640 : '100%')
       calendar.changeView(target)
     },

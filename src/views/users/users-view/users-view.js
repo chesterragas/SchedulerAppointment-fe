@@ -18,6 +18,7 @@ function blankEditor() {
     email: '',
     phoneNumber: '',
     isDoctor: false,
+    doctorTitle: '',
     isAdmin: false,
     error: '',
     saving: false
@@ -25,8 +26,9 @@ function blankEditor() {
 }
 
 function displayName(user) {
-  const name = [user.firstName, user.lastName].filter(Boolean).join(' ').trim()
-  return name || user.username
+  const name = [user.firstName, user.lastName].filter(Boolean).join(' ').trim() || user.username
+  const title = user.isDoctor ? (user.doctorTitle || '').trim() : ''
+  return title ? `${title} ${name}` : name
 }
 
 function isEmail(value) {
@@ -245,6 +247,7 @@ export default {
         email: user.email || '',
         phoneNumber: user.phoneNumber || '',
         isDoctor: Boolean(user.isDoctor),
+        doctorTitle: user.doctorTitle || '',
         isAdmin: Boolean(user.isAdmin)
       }
       this.$nextTick(() => {
@@ -341,6 +344,7 @@ export default {
         email: this.editor.email.trim(),
         phoneNumber: this.editor.phoneNumber.trim(),
         isDoctor: this.editor.isDoctor,
+        doctorTitle: this.editor.isDoctor ? this.editor.doctorTitle.trim() : '',
         isAdmin: this.editor.isAdmin
       }
       if (this.editor.password) {
@@ -365,6 +369,10 @@ export default {
       }
       if (model.email && !isEmail(model.email)) {
         this.editor.error = 'Enter a valid email.'
+        return
+      }
+      if (model.doctorTitle.length > 100) {
+        this.editor.error = 'Title must be 100 characters or fewer.'
         return
       }
 
