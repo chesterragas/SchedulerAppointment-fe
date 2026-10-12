@@ -6,8 +6,9 @@
       <p>Use a doctor's calendar link to open their calendar.</p>
     </div>
 
-    <div v-if="ownsCalendar && calendarId" class="calendar-page__bar">
-      <app-button variant="quiet" type="button" @click="openShare">Calendar link</app-button>
+    <div v-if="calendarId" class="calendar-page__bar">
+      <h1 v-if="selectedCalendar" class="calendar-page__title">{{ selectedCalendar.name }}</h1>
+      <app-button v-if="ownsCalendar" variant="quiet" type="button" @click="openShare">Calendar link</app-button>
     </div>
 
     <section v-if="calendarId" class="calendar-page__sheet">
@@ -18,7 +19,8 @@
       <form class="event-form" @submit.prevent="save">
         <p class="event-form__slot" :class="{ 'event-form__slot--lead': confirmingSlot }">{{ slotLabel }}</p>
         <p v-if="selectedCalendar" class="event-form__slot">{{ selectedCalendar.name }}</p>
-        <template v-if="!confirmingSlot">
+        <p v-if="cancellingOwn" class="event-form__slot">Remove this appointment from the calendar.</p>
+        <template v-if="!confirmingSlot && !cancellingOwn">
           <app-input id="appointment-first-name" v-model="editor.firstName" label="First name" autocomplete="given-name" required />
           <app-input id="appointment-last-name" v-model="editor.lastName" label="Last name" autocomplete="family-name" required />
           <app-input id="appointment-address" v-model="editor.address" label="Address" autocomplete="street-address" multiline required />
@@ -30,9 +32,9 @@
         </p>
         <p v-if="editor.error" class="event-form__error" role="alert">{{ editor.error }}</p>
         <div class="event-form__actions">
-          <app-button v-if="editor.id && ownsCalendar" variant="danger" type="button" @click="remove">Delete</app-button>
+          <app-button v-if="canRemove" variant="danger" type="button" @click="remove">{{ cancellingOwn ? 'Remove' : 'Delete' }}</app-button>
           <app-button variant="quiet" type="button" @click="closeEditor">Cancel</app-button>
-          <app-button type="submit" :disabled="editor.saving || editor.loading || needsProfile">{{ submitLabel }}</app-button>
+          <app-button v-if="!cancellingOwn" type="submit" :disabled="editor.saving || editor.loading || needsProfile">{{ submitLabel }}</app-button>
         </div>
       </form>
     </app-dialog>

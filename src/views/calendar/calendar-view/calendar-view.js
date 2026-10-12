@@ -29,6 +29,7 @@ function blankEditor() {
   return {
     open: false,
     id: '',
+    userId: '',
     firstName: '',
     lastName: '',
     address: '',
@@ -172,7 +173,19 @@ export default {
     confirmingSlot() {
       return this.signedIn && !this.ownsCalendar && !this.editor.id
     },
+    ownsAppointment() {
+      return this.signedIn && this.sameId(this.editor.userId, useAuthStore().userId)
+    },
+    cancellingOwn() {
+      return Boolean(this.editor.id) && !this.ownsCalendar && this.ownsAppointment
+    },
+    canRemove() {
+      return Boolean(this.editor.id) && (this.ownsCalendar || this.ownsAppointment)
+    },
     dialogTitle() {
+      if (this.cancellingOwn) {
+        return 'Your appointment'
+      }
       if (this.editor.id) {
         return 'Edit appointment'
       }
@@ -403,12 +416,15 @@ export default {
         })
         appointments.forEach((appointment) => {
           const slot = `${appointment.dateAppointment}T${appointment.timeAppointment}`
+          const mine = this.sameId(appointment.userId, useAuthStore().userId)
           calendar.addEvent({
             id: appointment.id,
             title: appointmentTitle(appointment),
             start: slot,
             allDay: false,
+            classNames: this.ownsCalendar || mine ? [] : ['fc-locked'],
             extendedProps: {
+              userId: appointment.userId || '',
               firstName: appointment.firstName,
               lastName: appointment.lastName,
               address: appointment.address,
@@ -484,7 +500,8 @@ export default {
       )
     },
     openEdit(event) {
-      if (!this.ownsCalendar) {
+      const mine = this.sameId(event.extendedProps.userId, useAuthStore().userId)
+      if (!this.ownsCalendar && !mine) {
         return
       }
       const slot = slotFromDate(event.start)
@@ -492,6 +509,7 @@ export default {
         ...blankEditor(),
         open: true,
         id: event.id,
+        userId: event.extendedProps.userId || '',
         firstName: event.extendedProps.firstName || '',
         lastName: event.extendedProps.lastName || '',
         address: event.extendedProps.address || '',
