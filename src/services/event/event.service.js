@@ -6,6 +6,10 @@ export function listEvents(start, end, calendarId) {
   })
 }
 
+export function listUpcomingAppointments() {
+  return api.get('/api/v1/Events/upcoming')
+}
+
 export function createEvent(model) {
   return api.post('/api/v1/Events', model)
 }

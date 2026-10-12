@@ -22,12 +22,19 @@
       </div>
 
       <nav v-if="!guestCalendar" class="app-shell__nav" aria-label="Pages">
-        <router-link class="app-shell__link" :class="{ 'router-link-exact-active': onCalendar }" :to="calendarTo" :title="collapsed ? 'Calendar' : undefined">
+        <router-link v-if="isDoctor || !signedIn" class="app-shell__link" :class="{ 'router-link-exact-active': onCalendar }" :to="calendarTo" :title="collapsed ? 'Calendar' : undefined">
           <svg class="app-shell__icon" viewBox="0 0 24 24" aria-hidden="true">
             <rect x="3.5" y="5" width="17" height="15.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.6" />
             <path d="M3.5 10h17M8 3.5v3.5M16 3.5v3.5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
           </svg>
           <span class="app-shell__label">Calendar</span>
+        </router-link>
+        <router-link v-if="isPatient" class="app-shell__link" to="/appointments" :title="collapsed ? 'Appointments' : undefined">
+          <svg class="app-shell__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3.5" y="5" width="17" height="15.5" rx="2" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="M3.5 10h17M8 3.5v3.5M16 3.5v3.5M8 14h8M8 17h5" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <span class="app-shell__label">Appointments</span>
         </router-link>
         <router-link v-if="isDoctor" class="app-shell__link" to="/availability" :title="collapsed ? 'Unavailable' : undefined">
           <svg class="app-shell__icon" viewBox="0 0 24 24" aria-hidden="true">

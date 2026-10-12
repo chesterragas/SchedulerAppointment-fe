@@ -7,8 +7,9 @@ import CalendarView from '@/views/calendar/calendar-view/calendar-view.vue'
 import ProfileView from '@/views/profile/profile-view/profile-view.vue'
 import UsersView from '@/views/users/users-view/users-view.vue'
 import AvailabilityView from '@/views/availability/availability-view/availability-view.vue'
+import AppointmentsView from '@/views/appointments/appointments-view/appointments-view.vue'
 import { rememberCalendar, rememberedCalendar } from '@/utils/calendar-link'
-import { safeRedirect } from '@/utils/redirect'
+import { signedInLanding } from '@/utils/redirect'
 
 const router = createRouter({
   history: createWebHistory(),
@@ -34,6 +35,12 @@ const router = createRouter({
           name: 'calendar',
           meta: { Auth: false },
           component: CalendarView
+        },
+        {
+          path: 'appointments',
+          name: 'appointments',
+          meta: { Auth: true, Patient: true },
+          component: AppointmentsView
         },
         {
           path: 'availability',
@@ -64,6 +71,14 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   const auth = useAuthStore()
+  if (auth.isAuthorized && !auth.isDoctor && to.name === 'calendar' && !to.params.calendarId) {
+    next({ name: 'appointments' })
+    return
+  }
+  if (auth.isDoctor && to.name === 'calendar') {
+    next()
+    return
+  }
   if (to.name === 'calendar' && to.params.calendarId) {
     rememberCalendar(to.params.calendarId)
   } else if (to.name === 'calendar') {
@@ -75,6 +90,7 @@ router.beforeEach((to, from, next) => {
   }
   const needsAuth = to.matched.some((record) => record.meta.Auth || record.meta.Doctor)
   const needsDoctor = to.matched.some((record) => record.meta.Doctor)
+  const needsPatient = to.matched.some((record) => record.meta.Patient)
 
   if (needsAuth && !auth.isAuthorized) {
     next({
@@ -82,9 +98,11 @@ router.beforeEach((to, from, next) => {
       query: { redirect: to.fullPath }
     })
   } else if (needsDoctor && !auth.isDoctor) {
-    next('/calendar')
+    next({ name: 'appointments' })
+  } else if (needsPatient && auth.isDoctor) {
+    next({ name: 'calendar' })
   } else if (to.path === '/login' && auth.isAuthorized) {
-    next(safeRedirect(to.query.redirect))
+    next(signedInLanding(auth.isDoctor, to.query.redirect))
   } else {
     next()
   }

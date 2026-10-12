@@ -1,6 +1,6 @@
 import AppButton from '@/components/app-button/app-button.vue'
 import AppInput from '@/components/app-input/app-input.vue'
-import { safeRedirect } from '@/utils/redirect'
+import { signedInLanding } from '@/utils/redirect'
 import { useAuthStore } from '@/store/modules/auth'
 
 export default {
@@ -30,8 +30,7 @@ export default {
       const auth = useAuthStore()
       try {
         await auth.login(this.username.trim(), this.password)
-        const redirect = safeRedirect(this.$route.query.redirect)
-        this.$router.push(redirect)
+        this.$router.push(signedInLanding(auth.isDoctor, this.$route.query.redirect))
       } catch (error) {
         if (error.response?.status === 401) {
           this.error = 'Those credentials were not recognized.'

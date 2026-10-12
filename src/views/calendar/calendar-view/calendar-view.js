@@ -326,6 +326,20 @@ export default {
           return
         }
         const all = response.data || []
+        const auth = useAuthStore()
+        if (auth.isDoctor) {
+          const mine = all.find((item) => this.sameId(item.doctorUserId, auth.userId))
+          if (!mine) {
+            this.calendars = []
+            this.error = 'Your calendar could not be found.'
+            return
+          }
+          this.calendars = [mine]
+          if (!this.sameId(this.$route.params.calendarId, mine.id)) {
+            await this.$router.replace({ name: 'calendar', params: { calendarId: mine.id } })
+          }
+          return
+        }
         const routeId = this.$route.params.calendarId
         if (routeId) {
           const match = all.find((item) => this.sameId(item.id, routeId))
@@ -335,12 +349,7 @@ export default {
           }
           return
         }
-        const userId = (useAuthStore().userId || '').toLowerCase()
-        const mine = all.find((item) => (item.doctorUserId || '').toLowerCase() === userId)
         this.calendars = []
-        if (mine) {
-          await this.$router.replace({ name: 'calendar', params: { calendarId: mine.id } })
-        }
       } catch (error) {
         if (request !== this.calendarRequest) {
           return

@@ -24,6 +24,9 @@ export default {
     isDoctor() {
       return useAuthStore().isDoctor
     },
+    isPatient() {
+      return this.signedIn && !this.isDoctor
+    },
     onCalendar() {
       return this.$route.name === 'calendar'
     },
@@ -31,6 +34,9 @@ export default {
       return !this.signedIn && Boolean(this.$route.params.calendarId)
     },
     calendarTo() {
+      if (this.isDoctor) {
+        return { name: 'calendar' }
+      }
       const id = this.$route.params.calendarId || rememberedCalendar()
       return id ? { name: 'calendar', params: { calendarId: id } } : { name: 'calendar' }
     }

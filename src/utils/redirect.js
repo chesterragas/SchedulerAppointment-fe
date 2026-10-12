@@ -12,3 +12,20 @@ export function safeRedirect(value) {
   }
   return value
 }
+
+export function signedInLanding(isDoctor, requested) {
+  const redirect = safeRedirect(requested)
+  if (isDoctor && redirect.startsWith('/calendar')) {
+    return { name: 'calendar' }
+  }
+  if (!isDoctor) {
+    if (typeof requested === 'string' && /^\/calendar\/[^/]+/.test(requested)) {
+      return requested
+    }
+    if (typeof requested === 'string' && requested.startsWith('/') && !requested.startsWith('/calendar')) {
+      return redirect
+    }
+    return { name: 'appointments' }
+  }
+  return redirect
+}
