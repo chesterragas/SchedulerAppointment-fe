@@ -83,6 +83,9 @@ export default {
     signIn() {
       this.$router.push({ path: '/login', query: { redirect: this.$route.fullPath } })
     },
+    signUp() {
+      this.$router.push({ path: '/signup', query: { redirect: this.$route.fullPath } })
+    },
     signOut() {
       useAuthStore().logout()
       this.$router.push('/login')

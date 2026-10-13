@@ -3,6 +3,7 @@ import { useAuthStore } from '@/store/modules/auth'
 import AppShell from '@/components/app-shell/app-shell.vue'
 import HomeView from '@/views/home/home-view/home-view.vue'
 import LoginView from '@/views/login/login-view/login-view.vue'
+import SignupView from '@/views/signup/signup-view/signup-view.vue'
 import CalendarView from '@/views/calendar/calendar-view/calendar-view.vue'
 import ProfileView from '@/views/profile/profile-view/profile-view.vue'
 import UsersView from '@/views/users/users-view/users-view.vue'
@@ -25,6 +26,12 @@ const router = createRouter({
       name: 'login',
       meta: { Auth: false },
       component: LoginView
+    },
+    {
+      path: '/signup',
+      name: 'signup',
+      meta: { Auth: false },
+      component: SignupView
     },
     {
       path: '/',
@@ -101,7 +108,7 @@ router.beforeEach((to, from, next) => {
     next({ name: 'appointments' })
   } else if (needsPatient && auth.isDoctor) {
     next({ name: 'calendar' })
-  } else if (to.path === '/login' && auth.isAuthorized) {
+  } else if ((to.path === '/login' || to.path === '/signup') && auth.isAuthorized) {
     next(signedInLanding(auth.isDoctor, to.query.redirect))
   } else {
     next()

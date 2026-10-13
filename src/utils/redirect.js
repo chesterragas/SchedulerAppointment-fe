@@ -7,6 +7,9 @@ export function safeRedirect(value) {
   if (value === '/login' || value.startsWith('/login?') || value.startsWith('/login/')) {
     return calendarPath()
   }
+  if (value === '/signup' || value.startsWith('/signup?') || value.startsWith('/signup/')) {
+    return calendarPath()
+  }
   if (value === '/calendar' || value === '/calendar/') {
     return calendarPath()
   }

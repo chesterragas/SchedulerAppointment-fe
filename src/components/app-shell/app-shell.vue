@@ -70,7 +70,15 @@
           </svg>
           <span class="app-shell__label">Sign out</span>
         </button>
-        <button v-else class="app-shell__link" type="button" :title="collapsed ? 'Sign in' : undefined" @click="signIn">
+        <button v-else class="app-shell__link" type="button" :title="collapsed ? 'Sign up' : undefined" @click="signUp">
+          <svg class="app-shell__icon" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="10" cy="8" r="2.6" fill="none" stroke="currentColor" stroke-width="1.6" />
+            <path d="M4.2 18.5c.5-2.6 2.4-4 5.8-4s5.3 1.4 5.8 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            <path d="M18 8v6M15 11h6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+          </svg>
+          <span class="app-shell__label">Sign up</span>
+        </button>
+        <button v-if="!signedIn" class="app-shell__link" type="button" :title="collapsed ? 'Sign in' : undefined" @click="signIn">
           <svg class="app-shell__icon" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M14 12H4M8 8l-4 4 4 4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
             <path d="M10 6V4.5h8.5v15H10V18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />

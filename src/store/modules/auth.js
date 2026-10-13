@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { login as loginRequest } from '@/services/login/login.service'
+import { login as loginRequest, signup as signupRequest } from '@/services/login/login.service'
 
 const TOKEN_KEY = 'scheduling.token'
 const USERNAME_KEY = 'scheduling.username'
@@ -40,10 +40,17 @@ export const useAuthStore = defineStore('auth', {
   actions: {
     async login(username, password) {
       const response = await loginRequest(username, password)
-      this.token = response.data.token
-      this.username = response.data.username
-      this.doctor = Boolean(response.data.isDoctor)
-      this.admin = Boolean(response.data.isAdmin)
+      this.remember(response.data)
+    },
+    async signup(model) {
+      const response = await signupRequest(model)
+      this.remember(response.data)
+    },
+    remember(session) {
+      this.token = session.token
+      this.username = session.username
+      this.doctor = Boolean(session.isDoctor)
+      this.admin = Boolean(session.isAdmin)
       localStorage.setItem(TOKEN_KEY, this.token)
       localStorage.setItem(USERNAME_KEY, this.username)
       localStorage.setItem(DOCTOR_KEY, this.doctor ? 'true' : 'false')

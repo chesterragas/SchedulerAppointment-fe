@@ -27,6 +27,10 @@
         <app-button type="submit" :disabled="submitting">
           {{ submitting ? 'Signing in…' : 'Sign in' }}
         </app-button>
+        <p class="login__switch">
+          New here?
+          <router-link :to="{ path: '/signup', query: $route.query }">Create an account</router-link>
+        </p>
       </form>
     </section>
   </main>
